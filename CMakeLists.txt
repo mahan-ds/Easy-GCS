@@ -4,7 +4,7 @@ project(EasyGCS VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Quick SerialPort)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -17,6 +17,7 @@ qt_add_qml_module(appEasyGCS
     VERSION 1.0
     QML_FILES
         Main.qml
+        SOURCES serialhandler.h serialhandler.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -32,6 +33,9 @@ set_target_properties(appEasyGCS PROPERTIES
 
 target_link_libraries(appEasyGCS
     PRIVATE Qt6::Quick
+    Qt6::Core
+    Qt6::SerialPort
+
 )
 
 include(GNUInstallDirs)
