@@ -10,42 +10,70 @@ Window {
     id : root
     property string statusText: "Disconnected"
 
-    Column {
-        anchors.centerIn: parent
-        spacing: 20
+    Rectangle{
+        id : connectionrec
+        width: parent.width/8
+        height: parent.height/15
+        color: "black"
+        radius: 15
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.rightMargin : 5
+        anchors.topMargin: 5
+        Row {
+            anchors.fill: parent
+            anchors.margins: 5
+            spacing: 10
 
-        Text {
-            text: "Status: " + root.statusText
-            font.pixelSize: 16
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
-        }
+            Image {
+                id : connectionImage
+                source: "qrc:/image/redchain.png"
+                width: parent.height
+                height: parent.height/2
+                anchors.verticalCenter: parent.verticalCenter
+            }
 
-        Button {
-            text: "Connect to Pixhawk"
-            onClicked: {
-                root.statusText = "Scanning..."
-                serialHandler.startScanning()
+            Label {
+                id : connectionLabel
+                text:  root.statusText
+                color: "white"
+                font.pointSize: parent.height / 3
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
-
-        Button {
-            text: "Disconnect"
+        MouseArea{
+            anchors.fill : parent
             onClicked: {
-                serialHandler.disconnectFromPixhawk()
-                root.statusText = "Disconnected"
+                if(root.statusText == "Disconnected")
+                {
+                    root.statusText = "Scanning..."
+                    connectionImage.source = "qrc:/image/redchain.png"
+                    serialHandler.startScanning()
+                }
+                else
+                {
+                    serialHandler.disconnectFromPixhawk()
+                    root.statusText = "Disconnected"
+                    connectionImage.source = "qrc:/image/redchain.png"
+                }
             }
         }
     }
+
+
     Connections {
         target: serialHandler
 
         onConnectedToPixhawk: function(portName) {
-            root.statusText = "Connected to " + portName
+            root.statusText = "Connected"
+            connectionImage.source = "qrc:/image/greenchain.png"
         }
 
         onDisconnect: function(){
             root.statusText = "Scanning..."
+            connectionImage.source = "qrc:/image/redchain.png"
         }
     }
 }

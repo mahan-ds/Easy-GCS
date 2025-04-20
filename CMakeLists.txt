@@ -8,6 +8,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick Quick SerialPort)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
+set(CMAKE_AUTORCC ON)
 qt_add_executable(appEasyGCS
     main.cpp
 )
@@ -18,6 +19,7 @@ qt_add_qml_module(appEasyGCS
     QML_FILES
         Main.qml
         SOURCES serialhandler.h serialhandler.cpp
+        RESOURCES resource.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

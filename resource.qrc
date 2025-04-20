@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/greenchain.png</file>
+        <file>image/redchain.png</file>
+    </qresource>
+</RCC>
