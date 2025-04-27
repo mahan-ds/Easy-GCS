@@ -20,6 +20,8 @@ qt_add_qml_module(appEasyGCS
         Main.qml
         SOURCES serialhandler.h serialhandler.cpp
         RESOURCES resource.qrc
+        SOURCES
+        SOURCES serialhandleradaptor.h serialhandleradaptor.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -46,3 +48,6 @@ install(TARGETS appEasyGCS
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+include_directories(${CMAKE_SOURCE_DIR}/c_library_v2)
+

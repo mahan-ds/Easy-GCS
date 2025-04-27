@@ -1,7 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "SerialHandler.h"
+#include <QThread>
+#include "serialhandler.h"
+#include "serialhandleradaptor.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,11 +11,18 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    // Create C++ backend
-    SerialHandler serialHandler;
+    SerialHandler *serialHandler = new SerialHandler;
+    QThread *serialThread = new QThread;
 
-    // Register the backend with QML
-    engine.rootContext()->setContextProperty("serialHandler", &serialHandler);
+    serialHandler->moveToThread(serialThread);
+
+    //QObject::connect(serialThread, &QThread::started, serialHandler, &SerialHandler::startScanning);
+
+    SerialHandlerAdaptor *serialAdaptor = new SerialHandlerAdaptor(serialHandler);
+
+    engine.rootContext()->setContextProperty("serialHandler", serialHandler);
+    engine.rootContext()->setContextProperty("serialAdaptor", serialAdaptor);
+
 
     QObject::connect(
         &engine,
@@ -24,6 +33,6 @@ int main(int argc, char *argv[])
         );
 
     engine.loadFromModule("EasyGCS", "Main");
-
+    serialThread->start();
     return app.exec();
 }
