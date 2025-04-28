@@ -172,6 +172,7 @@ Window {
                 }
             }
         }
+
     }
 
     Connections {
@@ -188,6 +189,19 @@ Window {
         }
     }
 
+    Connections{
+        target: mavlinkController
+
+        onAltitudeUpdated:function(altitude) {
+           test.text = altitude
+        }
+    }
+
+    Label {
+        text: "hiiii"
+        anchors.left: parent.left
+        id : test
+    }
     // برای نمایش وضعیت mavlink
     // property string mavlinkText: "Waiting for messages..."
 

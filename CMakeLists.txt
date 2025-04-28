@@ -23,6 +23,7 @@ qt_add_qml_module(appEasyGCS
         SOURCES
         SOURCES serialhandleradaptor.h serialhandleradaptor.cpp
         SOURCES mavlinkparser.h mavlinkparser.cpp
+        SOURCES mavlinkcontroller.h mavlinkcontroller.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

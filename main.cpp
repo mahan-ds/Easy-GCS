@@ -5,6 +5,7 @@
 #include "serialhandler.h"
 #include "serialhandleradaptor.h"
 #include "mavlinkparser.h"
+#include "mavlinkcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
     SerialHandlerAdaptor *serialAdaptor = new SerialHandlerAdaptor(serialHandler);
     QThread *serialThread = new QThread;
     mavlinkparser *mavlinkParser = new mavlinkparser;
+    mavlinkcontroller *mavlinkController = new mavlinkcontroller;
+
 
 
     serialHandler->moveToThread(serialThread);
@@ -23,9 +26,13 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("serialHandler", serialHandler);
     engine.rootContext()->setContextProperty("serialAdaptor", serialAdaptor);
+    engine.rootContext()->setContextProperty("mavlinkController", mavlinkController);
 
     QObject::connect(serialHandler, &SerialHandler::mavlinkMessageReceived,
                      mavlinkParser, &mavlinkparser::parseMavlinkMessage);
+
+    QObject::connect(mavlinkParser, &mavlinkparser::sendMavlinkMessage2Controller,
+                     mavlinkController, &mavlinkcontroller::handleMavlinkMessage);
 
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&]() {
         qDebug() << "[INFO] Application exiting. Cleaning up threads...";

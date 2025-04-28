@@ -26,46 +26,55 @@ void mavlinkparser::parseMavlinkMessage(const QByteArray &data)
             case MAVLINK_MSG_ID_HEARTBEAT: {
                 mavlink_heartbeat_t heartbeat;
                 mavlink_msg_heartbeat_decode(&msg, &heartbeat);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_SYS_STATUS: {
                 mavlink_sys_status_t sysStatus;
                 mavlink_msg_sys_status_decode(&msg, &sysStatus);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_ATTITUDE: {
                 mavlink_attitude_t attitude;
                 mavlink_msg_attitude_decode(&msg, &attitude);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_GLOBAL_POSITION_INT: {
                 mavlink_global_position_int_t position;
                 mavlink_msg_global_position_int_decode(&msg, &position);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_GPS_RAW_INT:{
                 mavlink_gps_raw_int_t satellite;
                 mavlink_msg_gps_raw_int_decode(&msg, &satellite);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_MISSION_ACK:{
                 mavlink_mission_ack_t missionAck;
                 mavlink_msg_mission_ack_decode(&msg,&missionAck);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_MISSION_REQUEST:{
                 mavlink_mission_request_t missionReq;
                 mavlink_msg_mission_request_decode(&msg,&missionReq);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_MISSION_CURRENT:{
                 mavlink_mission_current_t missionCurrent;
                 mavlink_msg_mission_current_decode(&msg,&missionCurrent);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             case MAVLINK_MSG_ID_STATUSTEXT: {
                 mavlink_statustext_t statusText;
                 mavlink_msg_statustext_decode(&msg, &statusText);
+                emit sendMavlinkMessage2Controller(msg.msgid, msg);
                 break;
             }
             default:

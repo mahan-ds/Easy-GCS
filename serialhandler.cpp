@@ -54,7 +54,7 @@ void SerialHandler::tryNextPort()
     serial->setPort(info);
     serial->setBaudRate(QSerialPort::Baud115200); // Change if needed
 
-    if (serial->open(QIODevice::ReadOnly)) {
+    if (serial->open(QIODevice::ReadWrite)) {
         qDebug() << "[INFO] Testing port:" << info.portName();
     } else {
         qDebug() << "[WARNING] Failed to open port:" << info.portName();
@@ -78,7 +78,7 @@ void SerialHandler::readData()
         if (!pixhawkConnected) {
             pixhawkConnected = true;
             emit connectedToPixhawk(serial->portName());
-            requestDataStream(MAV_DATA_STREAM_ALL, 1, true);
+            requestDataStream(MAV_DATA_STREAM_ALL, 10, true);
         }
 
         emit mavlinkMessageReceived(data);
