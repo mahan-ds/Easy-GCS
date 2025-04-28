@@ -6,9 +6,6 @@
 SerialHandler::SerialHandler(QObject *parent)
     : QObject(parent), currentPortIndex(0)
 {
-    // connect(scanTimer, &QTimer::timeout, this, &SerialHandler::tryNextPort);
-    // connect(serial, &QSerialPort::readyRead, this, &SerialHandler::readData);
-    // connect(serial, &QSerialPort::errorOccurred, this, &SerialHandler::handleSerialError);
 
 }
 
@@ -41,6 +38,7 @@ void SerialHandler::disconnectFromPixhawk()
         serial->close();
         qDebug() << "[INFO] Serial port closed.";
     }
+    pixhawkConnected = false;
 }
 
 void SerialHandler::tryNextPort()
@@ -77,12 +75,18 @@ void SerialHandler::readData()
             QMetaObject::invokeMethod(scanTimer, "stop", Qt::QueuedConnection);
         }
 
-        emit connectedToPixhawk(serial->portName());
+        if (!pixhawkConnected) {
+            pixhawkConnected = true;
+            emit connectedToPixhawk(serial->portName());
+            requestDataStream(MAV_DATA_STREAM_ALL, 1, true);
+        }
+
         emit mavlinkMessageReceived(data);
     } else {
         qDebug() << "[DEBUG] Non-MAVLink data received:" << data.toHex();
     }
 }
+
 
 void SerialHandler::handleSerialError(QSerialPort::SerialPortError error)
 {
@@ -93,7 +97,7 @@ void SerialHandler::handleSerialError(QSerialPort::SerialPortError error)
         QTimer::singleShot(2000, this, [this]() {
             QMetaObject::invokeMethod(this, "startScanning", Qt::QueuedConnection);
         });
-
+        pixhawkConnected = false;
         emit unintentionaldisconnect();
     }
 }
@@ -108,4 +112,24 @@ void SerialHandler::resetScan()
 void SerialHandler::requestStartScanning()
 {
     QMetaObject::invokeMethod(this, "startScanning", Qt::QueuedConnection);
+}
+
+void SerialHandler::requestDataStream(uint8_t stream_id, uint16_t rate, bool start)
+{
+    mavlink_message_t message;
+
+    mavlink_msg_request_data_stream_pack(
+        255,
+        190,
+        &message,
+        1,
+        1,
+        stream_id,
+        rate,
+        start ? 1 : 0
+        );
+
+    uint8_t buffer[300];
+    int len = mavlink_msg_to_send_buffer(buffer, &message);
+    serial->write(reinterpret_cast<const char*>(buffer), len);
 }

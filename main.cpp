@@ -4,6 +4,7 @@
 #include <QThread>
 #include "serialhandler.h"
 #include "serialhandleradaptor.h"
+#include "mavlinkparser.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,17 +13,27 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     SerialHandler *serialHandler = new SerialHandler;
+    SerialHandlerAdaptor *serialAdaptor = new SerialHandlerAdaptor(serialHandler);
     QThread *serialThread = new QThread;
+    mavlinkparser *mavlinkParser = new mavlinkparser;
+
 
     serialHandler->moveToThread(serialThread);
 
-    //QObject::connect(serialThread, &QThread::started, serialHandler, &SerialHandler::startScanning);
-
-    SerialHandlerAdaptor *serialAdaptor = new SerialHandlerAdaptor(serialHandler);
 
     engine.rootContext()->setContextProperty("serialHandler", serialHandler);
     engine.rootContext()->setContextProperty("serialAdaptor", serialAdaptor);
 
+    QObject::connect(serialHandler, &SerialHandler::mavlinkMessageReceived,
+                     mavlinkParser, &mavlinkparser::parseMavlinkMessage);
+
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&]() {
+        qDebug() << "[INFO] Application exiting. Cleaning up threads...";
+        serialThread->quit();
+        serialThread->wait();
+        serialHandler->deleteLater();
+        serialThread->deleteLater();
+    });
 
     QObject::connect(
         &engine,

@@ -11,8 +11,6 @@ class SerialHandler : public QObject
     Q_OBJECT
 public:
     explicit SerialHandler(QObject *parent = nullptr);
-    //Q_INVOKABLE void startScanning();
-    //Q_INVOKABLE void disconnectFromPixhawk();
 
 signals:
     void mavlinkMessageReceived(const QByteArray &data);
@@ -27,8 +25,9 @@ public slots:
     void startScanning();
     void disconnectFromPixhawk();
     Q_INVOKABLE void requestStartScanning();
+     void requestDataStream(uint8_t stream_id, uint16_t rate, bool start);
 
-private:
+public:
     void handleSerialError(QSerialPort::SerialPortError error);
     void resetScan();
 
@@ -36,6 +35,8 @@ private:
     int currentPortIndex;
     QSerialPort *serial = nullptr;
     QTimer *scanTimer = nullptr;
+private:
+    bool pixhawkConnected = false;
 };
 
 #endif

@@ -16,6 +16,7 @@ signals:
 
 private:
     SerialHandler *serialHandler;
+
 };
 
-#endif // SERIALHANDLERADAPTOR_H
+#endif
