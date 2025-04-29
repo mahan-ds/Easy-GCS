@@ -13,6 +13,7 @@ public:
 signals:
     void connectedToPixhawk(const QString &portName);
     void unintentionaldisconnect();
+    void manualdisconnect();
 
 private:
     SerialHandler *serialHandler;

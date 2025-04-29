@@ -39,6 +39,7 @@ void SerialHandler::disconnectFromPixhawk()
         qDebug() << "[INFO] Serial port closed.";
     }
     pixhawkConnected = false;
+    emit manualdisconnect();
 }
 
 void SerialHandler::tryNextPort()

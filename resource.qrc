@@ -2,5 +2,17 @@
     <qresource prefix="/">
         <file>image/greenchain.png</file>
         <file>image/redchain.png</file>
+        <file>image/rth.png</file>
+        <file>image/setup.png</file>
+        <file>image/takeoff.png</file>
+        <file>image/Xfarm.png</file>
+        <file>image/list.png</file>
+        <file>image/notification.png</file>
+        <file>image/plannig.png</file>
+        <file>image/action.png</file>
+        <file>image/speed.png</file>
+        <file>image/altitude.png</file>
+        <file>image/battery.png</file>
+        <file>image/satellite.png</file>
     </qresource>
 </RCC>

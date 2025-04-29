@@ -16,6 +16,7 @@ signals:
     void mavlinkMessageReceived(const QByteArray &data);
     void connectedToPixhawk(const QString &portName);
     void unintentionaldisconnect();
+    void manualdisconnect();
 
 private slots:
     void tryNextPort();

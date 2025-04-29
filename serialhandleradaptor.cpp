@@ -8,4 +8,7 @@ SerialHandlerAdaptor::SerialHandlerAdaptor(SerialHandler *handler, QObject *pare
 
     connect(serialHandler, &SerialHandler::unintentionaldisconnect,
             this, &SerialHandlerAdaptor::unintentionaldisconnect);
+
+    connect(serialHandler,  &SerialHandler::manualdisconnect,
+            this, &SerialHandlerAdaptor::manualdisconnect);
 }

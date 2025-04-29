@@ -9,6 +9,7 @@ class mavlinkcontroller : public QObject
     Q_OBJECT
 public:
     explicit mavlinkcontroller(QObject *parent = nullptr);
+    QString customMode;
 
 public slots:
     void handleMavlinkMessage(uint32_t msgid, const mavlink_message_t &msg);
