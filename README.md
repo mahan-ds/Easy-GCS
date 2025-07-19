@@ -16,25 +16,7 @@ This is a **Ground Station Telemetry Viewer** built with **Qt 6.8.2** using **Qt
 
 ---
 
-## 📦 Project Structure
 
-```
-GroundStation/
-├── qml/
-│   ├── Main.qml
-│   └── components/
-│       └── TelemetryView.qml
-├── src/
-│   ├── main.cpp
-│   ├── SerialManager.cpp
-│   └── SerialManager.h
-├── assets/
-│   └── icons, fonts, etc.
-├── CMakeLists.txt / GroundStation.pro
-└── README.md
-```
-
----
 
 ## ⚙️ Requirements
 
