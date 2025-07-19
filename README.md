@@ -90,12 +90,12 @@ Once detected, the app connects and begins streaming data to the UI.
 
 ## 🧑💻 Author
 
-- Developer: [Your Name]
-- Contact: [your_email@example.com] or [GitHub Profile]
+- Developer: mahan.ds
+- Contact: https://github.com/mahan-ds
 
 ---
 
 ## 📜 License
 
-This project is open-source. License: **MIT** *(or specify your own)*
+This project is open-source. License: **MIT**
 
